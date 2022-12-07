@@ -137,11 +137,13 @@ function get_current_values($interfaces, &$del, &$delJitter, &$delCorrelation, &
 								$gotNumber=false;
 								while ($gotNumber==false):
 									//If character is not '.' or 'u'
-									if (substr($lineStr, $n, 1)!="." & substr($lineStr, $n, 1)!="u")  {
-										//Add character to $tmpStr
+//									if (substr($lineStr, $n, 1)!="." & substr($lineStr, $n, 1)!="u")  {
+									if (substr($lineStr, $n, 1)!="." & substr($lineStr, $n, 1)!="u" & substr($lineStr, $n, 1)!="m")  {		// Kompatiblität mit neuem Linux Mint
+											//Add character to $tmpStr
 										$tmpStr3=$tmpStr3 . substr($lineStr, $n, 1);
 										//increment $n
 										$n=($n+1);
+
 									} else {
 										//else set $gotNumber to true
 										$gotNumber=true;
@@ -150,6 +152,12 @@ function get_current_values($interfaces, &$del, &$delJitter, &$delCorrelation, &
 										}
 									}
 								endwhile;
+
+								// Kompatiblität mit neuem Linux Mint
+								if (substr($lineStr, $n, 1)=="m") {
+									$n=($n-1);
+								}     // Ende Ergänzung
+
 
 								if ($usFound==false) {
 									$tmpStr4="";

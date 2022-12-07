@@ -432,11 +432,13 @@ function get_current_values(&$interface, &$del, &$delJitter, &$delCorrelation, &
 								$gotNumber=false;
 								while ($gotNumber==false):
 									//If character is not '.' or 'u'
-									if (substr($lineStr, $n, 1)!="." & substr($lineStr, $n, 1)!="u")  {
-										//Add character to $tmpStr
+//									if (substr($lineStr, $n, 1)!="." & substr($lineStr, $n, 1)!="u")  {
+									if (substr($lineStr, $n, 1)!="." & substr($lineStr, $n, 1)!="u" & substr($lineStr, $n, 1)!="m")  {		// Kompatiblität mit neuem Linux Mint
+											//Add character to $tmpStr
 										$tmpStr3=$tmpStr3 . substr($lineStr, $n, 1);
 										//increment $n
 										$n=($n+1);
+
 									} else {
 										//else set $gotNumber to true
 										$gotNumber=true;
@@ -446,6 +448,11 @@ function get_current_values(&$interface, &$del, &$delJitter, &$delCorrelation, &
 									}
 								endwhile;
 
+								// Kompatiblität mit neuem Linux Mint
+								if (substr($lineStr, $n, 1)=="m") {
+									$n=($n-1);
+								}     // Ende Ergänzung
+								
 								if ($usFound==false) {
 									$tmpStr4="";
 									$z=$n+1;
@@ -483,6 +490,13 @@ function get_current_values(&$interface, &$del, &$delJitter, &$delCorrelation, &
 									//increment $n by 5 or 6 to get to first jitter character
 									if ($msFound==true) {
 										$n=($n+6);
+
+										// Kompatiblität mit neuem Linux Mint
+										if (substr($lineStr, ($n-5), 1)=="m") {
+										$n=($n-1);
+										}	     		// Ende Ergänzung
+								
+
 									} else {
 										$n=($n+5);
 									}
@@ -497,8 +511,9 @@ function get_current_values(&$interface, &$del, &$delJitter, &$delCorrelation, &
 										$gotNumber=false;
 										while ($gotNumber==false):
 											//If character is not '.' or 'u'
-											if (substr($lineStr, $n, 1)!="." & substr($lineStr, $n, 1)!="u")  {
-												//Add character to $tmpStr
+		//									if (substr($lineStr, $n, 1)!="." & substr($lineStr, $n, 1)!="u")  {
+											if (substr($lineStr, $n, 1)!="." & substr($lineStr, $n, 1)!="u" & substr($lineStr, $n, 1)!="m")  {		// Kompatiblität mit neuem Linux Mint
+													//Add character to $tmpStr
 												$tmpStr3=$tmpStr3 . substr($lineStr, $n, 1);
 												//increment $n
 												$n=($n+1);
@@ -510,6 +525,12 @@ function get_current_values(&$interface, &$del, &$delJitter, &$delCorrelation, &
 												}
 											}
 										endwhile;
+
+									// Kompatiblität mit neuem Linux Mint
+									if (substr($lineStr, $n, 1)=="m") {
+										$n=($n-1);
+									}	     // Ende Ergänzung
+								
 
 										if ($usFound==false) {
 											$tmpStr4="";
