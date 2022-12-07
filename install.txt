@@ -1,0 +1,69 @@
+-------------------------
+Ergänzung Gastentwickler:
+
+
+WANem install on Linux Mint  
+================================================================
+Prerequisites: 
+    - Internet connection
+    - Linux mint 21
+================================================================
+Install required packages:
+
+sudo apt-get update
+sudo apt-get upgrade
+
+sudo apt install git
+sudo apt install apache2
+sudo apt install php7.2
+
+================================================================
+Update Linux Kernel (required for jitter setting to work correctly)
+
+Aktualisierungsverwaltung öffnen
+'Ansicht' --> 'Linux Kernel'
+Kernel 5.3 oder höher auswählen und installieren
+
+reboot
+
+================================================================
+Copy WANem files
+
+cd /home/andreas/Software
+git clone https://github.com/gastentwickler/WANem.git
+cd /home/andreas/Software/WANem/etc/apache2/sites-available
+sudo cp * /etc/apache2/sites-available/
+# cd /home/andreas/Software/WANem/etc/php5      vermutlich nicht nötig
+# sudo cp -r * /etc/php/7.2/                    vermutlich nicht nötig
+cd /home/andreas/Software/WANem/etc
+sudo su -c 'less sudoers >> /etc/sudoers'
+sudo cp -r /home/andreas/Software/WANem/root/* /root/
+sudo cp -r /home/andreas/Software/WANem/var/* /var/
+
+================================================================
+Adjust php Config
+in der Datei /etc/php/7.2/apache2/php.ini  den Eintrag "short_open_tag = On"  setzen
+in der Datei /etc/php/7.2/cli/php.ini  den Eintrag "short_open_tag = On"  setzen
+
+================================================================
+Adjust Apache Config
+
+sudo a2enmod proxy
+sudo a2enmod proxy_http
+sudo a2enmod proxy_balancer
+sudo a2enmod lbmethod_byrequests
+
+sudo nano /etc/apache2/sites-enabled/000-default.conf
+ab Zeile 54  <VirtualHost *:443>  auskommentieren und speichern
+
+systemctl restart apache2
+
+================================================================
+WANem Config
+Browser "http://localhost/WANem/"
+
+================================================================
+Sonstige Infos:
+php Debugging: https://www.nequalsonelifestyle.com/2022/08/08/setting-up-apache-php-with-xdebug/
+Apache2 Autostart einschalten: sudo systemctl enable apache2
+Apache2 Autostart ausschalten: sudo systemctl disable apache2
